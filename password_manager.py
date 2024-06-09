@@ -137,20 +137,19 @@ class PasswordManager(QMainWindow):
         Delete the selected password from the backend and update the table.
         """
         selected_row = self.password_table.currentRow()
-        if selected_row >= 0:
-            password_id_item = self.password_table.item(selected_row, 0)
-            if password_id_item:
-                password_id = int(password_id_item.text())
-                confirm = QMessageBox.question(
-                    self, "Confirm Delete",
-                    "Are you sure you want to delete this password?",
-                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-                )
-                if confirm == QMessageBox.StandardButton.Yes:
-                    self.backend.delete_password(password_id)
-                    self.load_passwords()
-        else:
+        password_id_item = self.password_table.item(selected_row, 0)
+        if not selected_row >=0:
             QMessageBox.warning(self, "No Selection", "Please select a password to delete.")
+        if password_id_item:
+            password_id = int(password_id_item.text())
+            confirm = QMessageBox.question(
+                self, "Confirm Delete",
+                "Are you sure you want to delete this password?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm == QMessageBox.StandardButton.Yes:
+                self.backend.delete_password(password_id)
+                self.load_passwords()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
